@@ -45,3 +45,29 @@ información al usuario**.
 - Cantidades y precios siempre son positivos.
 - Los archivos se escriben en UTF-8 para conservar las tildes.
 - Se informa por consola el éxito o el error de la ejecución.
+
+
+# Proyecto Ventas — Segunda entrega
+
+Versión preliminar del proyecto completo: incluye las dos clases con método `main`
+que pide el enunciado.
+
+## Contenido
+
+- `src/GenerateInfoFiles.java` — genera `productos.txt`, `vendedores.txt` y los
+  archivos `ventas_*.txt`.
+- `src/main.java` — procesa esos archivos y genera `reporte_vendedores.csv` y
+  `reporte_productos.csv`.
+- `.project`, `.classpath`, `.settings/` — metadatos del proyecto de Eclipse (Java 8).
+- `EstadoDelProyecto.docx` — documento con las partes que aún le faltan al proyecto.
+
+## Cómo ejecutar en Eclipse
+
+1. `File > Import… > General > Existing Projects into Workspace`, seleccionar la
+   carpeta `ProyectoVentas`.
+2. Clic derecho sobre `GenerateInfoFiles.java` → `Run As > Java Application`
+   (genera los archivos de entrada).
+3. Refrescar el proyecto (F5).
+4. Clic derecho sobre `main.java` → `Run As > Java Application` (genera los reportes).
+
+Ningún programa solicita información al usuario, como exige el enunciado.
