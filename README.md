@@ -71,3 +71,41 @@ que pide el enunciado.
 4. Clic derecho sobre `main.java` → `Run As > Java Application` (genera los reportes).
 
 Ningún programa solicita información al usuario, como exige el enunciado.
+
+# Proyecto Ventas — Entrega final
+
+Programa en Java 8 (Eclipse) que genera archivos planos de prueba y los procesa para
+producir reportes de ventas.
+
+## Clases (solo dos con método `main`)
+
+- `src/GenerateInfoFiles.java` — genera los archivos de entrada pseudoaleatorios:
+  `productos.txt`, `vendedores.txt` y los `ventas_*.txt` (uno o más por vendedor).
+  Incluye `createSalesMenFile`, `createProductsFile` y `createSalesManInfoFile`.
+- `src/main.java` — lee esos archivos y crea:
+  - `reporte_vendedores.csv`: `Nombre;DineroRecaudado`, de mayor a menor.
+  - `reporte_productos.csv`: `Nombre;Precio`, ordenado por cantidad vendida (mayor a menor).
+  - `errores_detectados.txt`: solo si encuentra datos erróneos o incoherentes.
+
+Ningún programa solicita información al usuario y ambos informan por consola si
+terminaron con éxito o con error.
+
+## Cómo ejecutar en Eclipse
+
+1. `File > Import… > General > Existing Projects into Workspace` y elegir esta carpeta.
+2. Clic derecho sobre `GenerateInfoFiles.java` → `Run As > Java Application`.
+3. Refrescar el proyecto (F5).
+4. Clic derecho sobre `main.java` → `Run As > Java Application`.
+
+Los archivos se crean en la carpeta raíz del proyecto.
+
+## Puntos extra implementados
+
+- **a)** Más de un archivo de ventas por vendedor (agrupados por documento, no por nombre de archivo).
+- **c)** Detección de datos erróneos: líneas mal formadas, productos inexistentes,
+  cantidades o precios negativos y vendedores no registrados; se omiten y se
+  registran en `errores_detectados.txt`.
+
+## Otros archivos
+
+- `conslusion.txt` — resumen de lo aprendido, aplicaciones profesionales y dificultades.
