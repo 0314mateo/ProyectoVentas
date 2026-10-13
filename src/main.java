@@ -62,6 +62,12 @@ public class main {
 	/** Nombre del archivo de reporte de productos. */
 	private static final String PRODUCTS_REPORT_FILE_NAME = "reporte_productos.csv";
 
+	/** Nombre del archivo donde se registran los datos erróneos detectados. */
+	private static final String ERRORS_LOG_FILE_NAME = "errores_detectados.txt";
+
+	/** Descripciones de los datos erróneos o incoherentes detectados. */
+	private static final List<String> detectedProblems = new ArrayList<String>();
+
 	/**
 	 * Punto de entrada del programa de generación de reportes.
 	 *
@@ -79,6 +85,12 @@ public class main {
 
 			System.out.println("Generación de reportes finalizada con éxito.");
 			System.out.println("Archivos creados: " + SALESMEN_REPORT_FILE_NAME + ", " + PRODUCTS_REPORT_FILE_NAME);
+
+			if (!detectedProblems.isEmpty()) {
+				writeErrorsLog();
+				System.out.println("Se detectaron " + detectedProblems.size() + " datos erróneos. Revise "
+						+ ERRORS_LOG_FILE_NAME + ".");
+			}
 		} catch (IOException exception) {
 			System.err.println("Error: no fue posible generar los reportes.");
 			System.err.println("Detalle: " + exception.getMessage());
@@ -227,14 +239,14 @@ public class main {
 
 			String headerLine = reader.readLine();
 			if (headerLine == null || headerLine.trim().isEmpty()) {
-				System.err.println("Advertencia: el archivo " + file.getName() + " está vacío. Se omite.");
+				recordProblem("El archivo " + file.getName() + " está vacío. Se omite.");
 				return;
 			}
 
 			String[] headerFields = headerLine.split(FIELD_SEPARATOR);
 			if (headerFields.length < 2) {
-				System.err.println(
-						"Advertencia: el encabezado de " + file.getName() + " no tiene el formato esperado. Se omite.");
+				recordProblem(
+						"El encabezado de " + file.getName() + " no tiene el formato esperado. Se omite el archivo.");
 				return;
 			}
 
@@ -244,8 +256,8 @@ public class main {
 
 			Salesman salesman = salesmen.get(key);
 			if (salesman == null) {
-				System.err.println("Advertencia: el archivo " + file.getName()
-						+ " pertenece a un vendedor que no está registrado en " + SALESMEN_INFO_FILE_NAME + ". Se omite.");
+				recordProblem("El archivo " + file.getName() + " pertenece a un vendedor que no está registrado en "
+						+ SALESMEN_INFO_FILE_NAME + ". Se omite el archivo.");
 				return;
 			}
 
@@ -274,8 +286,8 @@ public class main {
 
 				Product product = products.get(productId);
 				if (product == null) {
-					System.err.println("Advertencia: producto " + productId + " referenciado en " + file.getName()
-							+ " (línea " + lineNumber + ") no existe en " + PRODUCTS_FILE_NAME + ". Se omite la línea.");
+					recordProblem("El producto " + productId + " referenciado en " + file.getName() + " (línea "
+							+ lineNumber + ") no existe en " + PRODUCTS_FILE_NAME + ". Se omite la línea.");
 					continue;
 				}
 
@@ -340,6 +352,37 @@ public class main {
 
 			for (Product product : orderedProducts) {
 				writer.write(product.getName() + FIELD_SEPARATOR + formatAmount(product.getUnitPrice()));
+				writer.write(System.lineSeparator());
+			}
+		} finally {
+			closeQuietly(writer);
+		}
+	}
+
+	/**
+	 * Registra un dato erróneo o incoherente detectado durante el procesamiento y
+	 * lo informa por consola. El procesamiento continúa con el resto de datos.
+	 *
+	 * @param description descripción del problema detectado.
+	 */
+	private static void recordProblem(String description) {
+		detectedProblems.add(description);
+		System.err.println("Advertencia: " + description);
+	}
+
+	/**
+	 * Escribe en un archivo de texto todos los datos erróneos o incoherentes
+	 * detectados, uno por línea.
+	 *
+	 * @throws IOException si ocurre un error al escribir el archivo.
+	 */
+	private static void writeErrorsLog() throws IOException {
+		Writer writer = null;
+		try {
+			writer = openWriter(ERRORS_LOG_FILE_NAME);
+
+			for (String problem : detectedProblems) {
+				writer.write(problem);
 				writer.write(System.lineSeparator());
 			}
 		} finally {
@@ -414,8 +457,8 @@ public class main {
 	 * @param line       contenido de la línea.
 	 */
 	private static void warnMalformedLine(String fileName, int lineNumber, String line) {
-		System.err.println(
-				"Advertencia: línea mal formada en " + fileName + " (línea " + lineNumber + "): \"" + line + "\". Se omite.");
+		recordProblem("Línea mal formada o con valores negativos en " + fileName + " (línea " + lineNumber + "): \""
+				+ line + "\". Se omite.");
 	}
 
 	/**
