@@ -1,0 +1,66 @@
+CONCLUSIONES DEL PROYECTO - PROYECTO VENTAS
+===========================================
+
+1. LO APRENDIDO DURANTE EL DESARROLLO DEL PROYECTO
+---------------------------------------------------
+- Aprendi a leer y escribir archivos de texto plano en Java usando flujos
+  (BufferedReader, BufferedWriter, InputStreamReader, OutputStreamWriter) y a
+  cerrarlos siempre en un bloque finally para no dejar recursos abiertos.
+- Comprendi la importancia de la codificacion de caracteres: al usar UTF-8 de
+  forma explicita, los nombres con tildes y la letra n se conservan correctamente
+  en los archivos generados y en los reportes.
+- Practique el uso de colecciones (Map, List) y de Comparator para acumular
+  totales por vendedor y por producto, y para ordenar los reportes de mayor a
+  menor.
+- Aprendi a generar datos de prueba pseudoaleatorios pero coherentes: los
+  identificadores de producto de las ventas siempre existen en el catalogo, los
+  documentos de los vendedores no se repiten y los nombres salen de listas de
+  nombres reales.
+- Aplique buenas practicas de programacion: nombres descriptivos de variables y
+  metodos, constantes en lugar de valores sueltos, metodos cortos de una sola
+  responsabilidad, documentacion Javadoc y separacion de responsabilidades entre
+  la clase que genera los archivos (GenerateInfoFiles) y la que los procesa
+  (main).
+- Aprendi a manejar errores sin detener el programa: las lineas mal formadas, los
+  productos inexistentes y las cantidades negativas se omiten y se registran en
+  un archivo de errores, mientras el resto de los datos se sigue procesando.
+- Aprendi a usar Git y GitHub para entregar un proyecto, y a importar un
+  proyecto existente en Eclipse.
+
+2. POSIBLES APLICACIONES EN LA VIDA PROFESIONAL
+-----------------------------------------------
+- El procesamiento de archivos planos (CSV y similares) es una tarea muy comun
+  en la integracion de sistemas, la migracion de datos y la generacion de
+  reportes para areas comerciales, contables y logisticas.
+- La validacion de datos de entrada (formatos incorrectos, referencias a
+  registros que no existen, valores negativos) es fundamental en cualquier
+  sistema real, donde los datos casi nunca llegan perfectos.
+- Generar datos de prueba coherentes sirve para probar aplicaciones sin usar
+  informacion real de clientes, algo clave en el desarrollo de software y en la
+  proteccion de datos personales.
+- Documentar el codigo con Javadoc y mantener buenas practicas de estilo facilita
+  el trabajo en equipo y el mantenimiento de un proyecto a lo largo del tiempo.
+- El uso de control de versiones (Git y GitHub) es un estandar en la industria
+  para colaborar y entregar software.
+
+3. DIFICULTADES PRESENTADAS DURANTE EL DESARROLLO
+-------------------------------------------------
+- Subir el proyecto a GitHub desde la web fue una dificultad: al arrastrar los
+  archivos no se subieron las carpetas src y .settings, ni los archivos ocultos
+  .project y .classpath, que son necesarios para que Eclipse reconozca el
+  proyecto. Se resolvio creando esos archivos manualmente indicando la ruta
+  completa en el nombre (por ejemplo, src/main.java).
+- Al comienzo no encontraba el panel Project Explorer en Eclipse, por lo que
+  tuve que abrirlo desde el menu Window > Show View para poder ver los archivos
+  generados.
+- Fue necesario asegurar la coherencia entre los dos programas: el formato de
+  los archivos que genera GenerateInfoFiles tenia que coincidir exactamente con
+  el que lee main (separadores, orden de los campos y encabezado de cada archivo
+  de ventas).
+- Resolver que un mismo vendedor pudiera tener varios archivos de ventas exigio
+  agrupar la informacion por tipo y numero de documento, y no por el nombre del
+  archivo.
+- Hubo que definir que hacer con los datos erroneos: se opto por omitirlos y
+  registrarlos en un archivo en lugar de detener todo el programa.
+- Cumplir con la restriccion de que ningun programa solicite informacion al
+  usuario obligo a definir todos los parametros de generacion como constantes.
